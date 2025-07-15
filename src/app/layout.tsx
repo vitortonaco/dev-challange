@@ -5,9 +5,9 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
    return (
      <html lang="en">
        <body className="">
-+        <AppRouterCacheProvider>
+        <AppRouterCacheProvider>
            {props.children}
-+        </AppRouterCacheProvider>
+        </AppRouterCacheProvider>
        </body>
      </html>
    );
