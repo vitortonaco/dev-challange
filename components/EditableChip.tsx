@@ -30,12 +30,27 @@ export function EditableChip(props: EditableChipProps) {
   return(
     <span key={props.index} style={{ display: 'flex', alignItems: 'center' }}>
       {!edit && (
-        <>
-          <Chip label={props.value} color="primary" size="small" sx={{ mr: 0.5 }} />
-          <IconButton aria-label="delete" onClick={() => setEdit(true)} size="small">
-              <EditIcon fontSize="small" />
-          </IconButton>
-        </>
+        <Chip
+          label={
+            <span style={{ display: 'flex', alignItems: 'center' }}>
+              {props.value}
+              <IconButton
+                aria-label="edit"
+                onClick={e => {
+                  e.stopPropagation()
+                  setEdit(true)
+                }}
+                size="small"
+                sx={{ ml: 0.5, p: 0.25 }}
+              >
+                <EditIcon fontSize="small" sx={{ color: 'rgba(205, 197, 203, 1)' }} />
+              </IconButton>
+            </span>
+          }
+          color="primary"
+          size="small"
+          sx={{ mr: 0.5, pr: 0.5 }}
+        />
       )}
       {edit && (
         <>
@@ -44,14 +59,25 @@ export function EditableChip(props: EditableChipProps) {
             onChange={e => props.handleArrayChange(props.setKeywords, props.keyWords, props.index, e.target.value)}
             size="small"
             variant="standard"
-            InputProps={{ disableUnderline: false }}
-            sx={{ width: 70, mx: 0.5 }}
+            InputProps={{
+              disableUnderline: false,
+              endAdornment: (
+                <>
+                  <IconButton
+                    aria-label="close"
+                    onClick={() => setEdit(false)}
+                    size="small"
+                    edge="end"
+                  >
+                    <CloseIcon fontSize="small" />
+                  </IconButton>
+                </>
+              ),
+            }}
+            sx={{ mx: 0.5, minWidth: '70px' }}
           />
           <IconButton aria-label="delete" onClick={() => props.handleDeleteFromArray(props.setKeywords, props.keyWords, props.index)} size="small">
             <DeleteIcon fontSize="small" />
-          </IconButton>
-          <IconButton aria-label="delete" onClick={() => setEdit(false)} size="small">
-            <CloseIcon fontSize="small" />
           </IconButton>
         </>
       )}

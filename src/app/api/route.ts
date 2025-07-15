@@ -13,14 +13,13 @@ export type errorResponse = {
   type: string;
 };
 
-async function fetchAndExtract(url: string): Promise<string> {
+async function fetchAndExtract(url: string): Promise<string | null> {
   try {
     const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0' } });
     const html = await res.text();
     const $ = cheerio.load(html);
     
 
-    // Extract useful content
     const title = $('title').text();
     const metaDescription = $('meta[name="description"]').attr('content') || '';
     const headings = $('h1, h2').map((_, el) => $(el).text()).get().join('\n');
@@ -32,7 +31,7 @@ async function fetchAndExtract(url: string): Promise<string> {
     `;
   } catch (err) {
     console.error('Error fetching URL:', err);
-    return '';
+    return null;
   }
 }
 
@@ -56,22 +55,23 @@ export async function POST(req: NextRequest) {
         {
           role: 'system',
           content: `
-            You are a data extraction agent. Given the summary of a web page, extract and return a JSON object with this exact structure:
+            You are a data extraction agent for a company that is looking for clients that want to sign a contract with the government. Given the summary of a web page, extract and return a JSON object with this exact structure:
 
             {
               "company_name": string,
-              "service_line": string,
+              "service_line": string[],
               "company_description": string,
               "tier1_keywords": string[],
               "tier2_keywords": string[],
               "emails": string[],
-              "poc": string
+              "poc": string[]
             }
 
-            - "tier1_keywords" = core business keywords (high-level)
-            - "tier2_keywords" = related or supporting keywords
-            - "emails" = extract any emails from the text (can be empty if none)
-            - "poc" = point of contact (if available, else null)
+            - "tier1_keywords" = keywords that this company would use to search for public government opportunities.
+            - "tier2_keywords" =  keywords that this company MIGHT use to search for government opportunities.
+            - "emails" = extract any emails from the text (can be empty if none).
+            - "poc" = point of contact (as an array of strings).
+            - "service_line" = the primary services or solutions offered by the company (as an array of strings).
             Strictly return only the JSON. Do not add any explanation or notes.
             `,
         },
@@ -83,7 +83,6 @@ export async function POST(req: NextRequest) {
     });
 
     const jsonResponse = completion.choices[0].message.content?.trim();
-
     return NextResponse.json({ data: jsonResponse });
   } catch (err) {
     console.error('OpenAI API error:', err);
