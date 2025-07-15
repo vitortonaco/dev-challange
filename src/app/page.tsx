@@ -108,9 +108,9 @@ export default function HomePage() {
               />
             <Button 
               variant='contained' 
-              onClick={handleAnalyze} 
+              onClick={handleAnalyze}
               disabled={loading || !url}
-              sx={{ marginLeft: 2, borderRadius: 2 }}
+              sx={{ marginLeft: 2, borderRadius: 2, backgroundColor: 'rgba(0,0,0,1)' }}
             >
               {loading ? 'Analyzing...' : 'Analyze'}
             </Button>

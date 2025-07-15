@@ -1,4 +1,4 @@
-import { Chip, TextField, IconButton } from "@mui/material"
+import { Chip, TextField, IconButton, Typography } from "@mui/material"
 import React, { useState } from "react"
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
@@ -33,7 +33,7 @@ export function EditableChip(props: EditableChipProps) {
         <Chip
           label={
             <span style={{ display: 'flex', alignItems: 'center' }}>
-              {props.value}
+              <Typography color="rgba(255,255,255,1)">{props.value}</Typography>
               <IconButton
                 aria-label="edit"
                 onClick={e => {
@@ -47,9 +47,8 @@ export function EditableChip(props: EditableChipProps) {
               </IconButton>
             </span>
           }
-          color="primary"
           size="small"
-          sx={{ mr: 0.5, pr: 0.5 }}
+          sx={{ mr: 0.5, pr: 0.5, backgroundColor: "rgba(0,0,0,1)" }}
         />
       )}
       {edit && (
