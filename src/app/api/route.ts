@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo', // cheaper
+      model: 'gpt-3.5-turbo',
       messages: [
         {
           role: 'system',
@@ -80,6 +80,7 @@ export async function POST(req: NextRequest) {
           content: `Here is the web page summary:\n\n${pageSummary}`,
         },
       ],
+      response_format: { type: 'json_object' },
     });
 
     const jsonResponse = completion.choices[0].message.content?.trim();
