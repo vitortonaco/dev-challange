@@ -45,28 +45,27 @@ function CompanyCard(props: CompanyCardData) {
   };
 
   return (
-    <Card sx={{ minWidth: 300, maxWidth: 500, margin: 2 }}>
+    <Card sx={{ minWidth: 350, maxWidth: 500, margin: 2 }}>
       <CardContent>
-        <Typography variant="h5" component="div" gutterBottom>
+        <Stack spacing={2}>
           <TextField
+            label="Company Name"
             variant="standard"
             value={companyName}
             onChange={e => setCompanyName(e.target.value)}
             InputProps={{ disableUnderline: true, style: { fontSize: 24, fontWeight: 500 } }}
             fullWidth
           />
-        </Typography>
-        <Typography color="text.secondary" gutterBottom>
           <TextField
+            label="Service Line"
             variant="standard"
             value={serviceLine}
             onChange={e => setServiceLine(e.target.value)}
             InputProps={{ disableUnderline: true, style: { color: 'rgba(0,0,0,0.6)' } }}
             fullWidth
           />
-        </Typography>
-        <Typography variant="body2" sx={{ mb: 2 }}>
           <TextField
+            label="Description"
             variant="standard"
             value={companyDescription}
             onChange={e => setCompanyDescription(e.target.value)}
@@ -74,89 +73,88 @@ function CompanyCard(props: CompanyCardData) {
             fullWidth
             multiline
           />
-        </Typography>
-        <Typography variant="subtitle2">Tier 1 Keywords:</Typography>
-        <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', mb: 1 }}>
-          {tier1Keywords.map((kw, idx) => (
-            <span key={idx} style={{ display: 'flex', alignItems: 'center' }}>
-              <Chip label={kw} color="primary" size="small" sx={{ mr: 0.5 }} />
-              <IconButton aria-label="edit" size="small" onClick={() => {}} style={{ padding: 2 }}>
-                <TextField
-                  value={kw}
-                  onChange={e => handleArrayChange(setTier1Keywords, tier1Keywords, idx, e.target.value)}
-                  size="small"
-                  variant="standard"
-                  InputProps={{ disableUnderline: false }}
-                  sx={{ width: 70 }}
-                />
+          <div>
+            <Typography variant="subtitle2" sx={{ mb: 0.5 }}>Tier 1 Keywords:</Typography>
+            <Stack direction="row" spacing={1} sx={{ flex: 1, justifyContent: 'flex-start', flexWrap: 'wrap', mb: 1 }}>
+              {tier1Keywords.map((kw, idx) => (
+                <span key={idx} style={{ display: 'flex', alignItems: 'center' }}>
+                  <Chip label={kw} color="primary" size="small" sx={{ mr: 0.5 }} />
+                  <TextField
+                    value={kw}
+                    onChange={e => handleArrayChange(setTier1Keywords, tier1Keywords, idx, e.target.value)}
+                    size="small"
+                    variant="standard"
+                    InputProps={{ disableUnderline: false }}
+                    sx={{ width: 70, mx: 0.5 }}
+                  />
+                  <IconButton aria-label="delete" onClick={() => handleDeleteFromArray(setTier1Keywords, tier1Keywords, idx)} size="small">
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </span>
+              ))}
+              <IconButton aria-label="add" onClick={() => handleAddToArray(setTier1Keywords, tier1Keywords)} size="small">
+                <AddIcon fontSize="small" />
               </IconButton>
-              <IconButton aria-label="delete" onClick={() => handleDeleteFromArray(setTier1Keywords, tier1Keywords, idx)} size="small">
-                <DeleteIcon fontSize="small" />
+            </Stack>
+          </div>
+          <div>
+            <Typography variant="subtitle2" sx={{ mb: 0.5 }}>Tier 2 Keywords:</Typography>
+            <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', mb: 1 }}>
+              {tier2Keywords.map((kw, idx) => (
+                <span key={idx} style={{ display: 'flex', alignItems: 'center' }}>
+                  <Chip label={kw} color="secondary" size="small" sx={{ mr: 0.5 }} />
+                  <TextField
+                    value={kw}
+                    onChange={e => handleArrayChange(setTier2Keywords, tier2Keywords, idx, e.target.value)}
+                    size="small"
+                    variant="standard"
+                    InputProps={{ disableUnderline: false }}
+                    sx={{ width: 70, mx: 0.5 }}
+                  />
+                  <IconButton aria-label="delete" onClick={() => handleDeleteFromArray(setTier2Keywords, tier2Keywords, idx)} size="small">
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </span>
+              ))}
+              <IconButton aria-label="add" onClick={() => handleAddToArray(setTier2Keywords, tier2Keywords)} size="small">
+                <AddIcon fontSize="small" />
               </IconButton>
-            </span>
-          ))}
-          <IconButton aria-label="add" onClick={() => handleAddToArray(setTier1Keywords, tier1Keywords)} size="small">
-            <AddIcon fontSize="small" />
-          </IconButton>
-        </Stack>
-        <Typography variant="subtitle2">Tier 2 Keywords:</Typography>
-        <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', mb: 1 }}>
-          {tier2Keywords.map((kw, idx) => (
-            <span key={idx} style={{ display: 'flex', alignItems: 'center' }}>
-              <Chip label={kw} color="secondary" size="small" sx={{ mr: 0.5 }} />
-              <IconButton aria-label="edit" size="small" onClick={() => {}} style={{ padding: 2 }}>
-                <TextField
-                  value={kw}
-                  onChange={e => handleArrayChange(setTier2Keywords, tier2Keywords, idx, e.target.value)}
-                  size="small"
-                  variant="standard"
-                  InputProps={{ disableUnderline: false }}
-                  sx={{ width: 70 }}
-                />
+            </Stack>
+          </div>
+          <div>
+            <Typography variant="subtitle2" sx={{ mb: 0.5 }}>Emails:</Typography>
+            <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', mb: 1  }}>
+              {emails.map((email, idx) => (
+                <span key={idx} style={{ display: 'flex', alignItems: 'center' }}>
+                  <Chip label={email} variant="outlined" size="small" sx={{ mr: 0.5 }} />
+                  <TextField
+                    value={email}
+                    onChange={e => handleArrayChange(setEmails, emails, idx, e.target.value)}
+                    size="small"
+                    variant="standard"
+                    fullWidth
+                    sx={{ width: 200 }}
+                    InputProps={{ disableUnderline: false }}
+                  />
+                  <IconButton aria-label="delete" onClick={() => handleDeleteFromArray(setEmails, emails, idx)} size="small">
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </span>
+              ))}
+              <IconButton aria-label="add" onClick={() => handleAddToArray(setEmails, emails)} size="small">
+                <AddIcon fontSize="small" />
               </IconButton>
-              <IconButton aria-label="delete" onClick={() => handleDeleteFromArray(setTier2Keywords, tier2Keywords, idx)} size="small">
-                <DeleteIcon fontSize="small" />
-              </IconButton>
-            </span>
-          ))}
-          <IconButton aria-label="add" onClick={() => handleAddToArray(setTier2Keywords, tier2Keywords)} size="small">
-            <AddIcon fontSize="small" />
-          </IconButton>
-        </Stack>
-        <Typography variant="subtitle2">Emails:</Typography>
-        <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', mb: 1 }}>
-          {emails.map((email, idx) => (
-            <span key={idx} style={{ display: 'flex', alignItems: 'center' }}>
-              <Chip label={email} variant="outlined" size="small" sx={{ mr: 0.5 }} />
-              <IconButton aria-label="edit" size="small" onClick={() => {}} style={{ padding: 2 }}>
-                <TextField
-                  value={email}
-                  onChange={e => handleArrayChange(setEmails, emails, idx, e.target.value)}
-                  size="small"
-                  variant="standard"
-                  InputProps={{ disableUnderline: false }}
-                  sx={{ width: 120 }}
-                />
-              </IconButton>
-              <IconButton aria-label="delete" onClick={() => handleDeleteFromArray(setEmails, emails, idx)} size="small">
-                <DeleteIcon fontSize="small" />
-              </IconButton>
-            </span>
-          ))}
-          <IconButton aria-label="add" onClick={() => handleAddToArray(setEmails, emails)} size="small">
-            <AddIcon fontSize="small" />
-          </IconButton>
-        </Stack>
-        <Typography variant="subtitle2">POC:</Typography>
-        <Typography variant="body2">
+            </Stack>
+          </div>
           <TextField
+            label="POC"
             variant="standard"
             value={poc}
             onChange={e => setPoc(e.target.value)}
             InputProps={{ disableUnderline: true }}
             fullWidth
           />
-        </Typography>
+        </Stack>
       </CardContent>
     </Card>
   );
