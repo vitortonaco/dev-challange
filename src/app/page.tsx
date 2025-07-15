@@ -130,6 +130,7 @@ export default function HomePage() {
             {(errorMessage) && (
             <Typography color={"error"} sx={{ marginTop: 2 }}>
               {errorMessage && `OpenAI API Error: ${errorMessage}`}
+              {"Please retry"}
             </Typography>
           )}
         </>
