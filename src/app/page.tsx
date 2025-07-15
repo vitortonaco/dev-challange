@@ -1,95 +1,142 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
 
-export default function Home() {
+import { useEffect, useState } from 'react';
+import Paper from '@mui/material/Paper';
+import { Button, IconButton, Input, TextField, Typography } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import { errorResponse } from './api/route';
+import CompanyCard, { CompanyCardData } from '../../components/CompanyCard';
+
+const mockCompanyData = {
+  company_name: 'Example Corp',
+  service_line: 'Software Development',
+  company_description: 'A leading software development company specializing in web and mobile applications.',
+  tier1_keywords: ['software', 'development', 'web', 'mobile'],
+  tier2_keywords: ['agile', 'scrum', 'devops'],
+  emails: ['contact@example.com', 'info@example.com'],
+  poc: 'John Doe, CEO'
+} as CompanyCardData;
+
+export default function HomePage() {
+  const [url, setUrl] = useState('');
+  const [result, setResult] = useState<CompanyCardData | null>(mockCompanyData);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    console.log('Error message updated:', errorMessage);
+  }, [errorMessage]);
+
+  const handleAnalyze = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setResult(null);
+    setErrorMessage(null);
+
+    try {
+      const res = await fetch('/api', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url }),
+      });
+
+      const data = await res.json();
+      if (data && data.error) {
+        setErrorMessage(data.code);
+        return;
+      }
+      setResult(data.data || data.error);
+      console.log(data);
+    } catch (err: errorResponse | any) {
+      setErrorMessage('erro');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <Paper
+      elevation={0}
+      sx={{
+      minHeight: '95vh',
+      minWidth: '75vw',
+      padding: 18,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      boxSizing: 'border-box',
+      }}
+      square
+    >
+      {!result && (
+        <>
+          <Typography 
+        fontWeight={'bold'}
+        padding={4}
+        fontSize={24}
+      >
+        Get Company Info
+      </Typography>
+      <Paper 
+        elevation={1}
+        sx={{
+          display: 'flex',
+          width: '50vw',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 4,
+          borderRadius: 8
+        }}>
+        <TextField
+          placeholder='Enter URL to analyze'
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          inputProps={{
+                  onKeyDown: (event) => {
+                    if (event.key === "Enter") {
+                      // write your functionality here
+                      event.preventDefault();
+                    }
+                  },
+                }}
         />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        <Button 
+          variant='contained' 
+          onClick={handleAnalyze} 
+          disabled={loading || !url}
+          sx={{ marginLeft: 2 }}
+        >
+          {loading ? 'Analyzing...' : 'Analyze'}
+        </Button>
+      </Paper>
+      {(errorMessage) && (
+      <Typography color={"error"} sx={{ marginTop: 2 }}>
+        {errorMessage && `OpenAI API Error: ${errorMessage}`}
+      </Typography>
+    )}
+        </>
+      )}
+      {result && (
+        <Paper elevation={0}>
+          <IconButton
+            onClick={() => setResult(null)}
+            sx={{  top: 56, right: -516 }}
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+            <CloseIcon />
+          </IconButton>
+          <CompanyCard
+            company_name={result.company_name}
+            service_line={result.service_line}
+            company_description={result.company_description}
+            tier1_keywords={result.tier1_keywords}
+            tier2_keywords={result.tier2_keywords}
+            emails={result.emails}
+            poc={result.poc}
           />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+        </Paper>
+      )}
+    </Paper>
+  )
 }
