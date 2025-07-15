@@ -1,48 +1,49 @@
 
-import React, { useState } from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
+import React, { useState } from 'react'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Typography from '@mui/material/Typography'
+import Chip from '@mui/material/Chip'
+import Stack from '@mui/material/Stack'
 
-import IconButton from '@mui/material/IconButton';
-import TextField from '@mui/material/TextField';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton'
+import TextField from '@mui/material/TextField'
+import AddIcon from '@mui/icons-material/Add'
+import { EditableChip } from './EditableChip'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 export type CompanyCardData = {
-  company_name: string;
-  service_line: string;
-  company_description: string;
-  tier1_keywords: string[];
-  tier2_keywords: string[];
-  emails: string[];
-  poc: string;
-};
+  company_name: string
+  service_line: string
+  company_description: string
+  tier1_keywords: string[]
+  tier2_keywords: string[]
+  emails: string[]
+  poc: string
+}
 
 function CompanyCard(props: CompanyCardData) {
-  const [companyName, setCompanyName] = useState(props.company_name);
-  const [serviceLine, setServiceLine] = useState(props.service_line);
-  const [companyDescription, setCompanyDescription] = useState(props.company_description);
-  const [tier1Keywords, setTier1Keywords] = useState<string[]>(props.tier1_keywords);
-  const [tier2Keywords, setTier2Keywords] = useState<string[]>(props.tier2_keywords);
-  const [emails, setEmails] = useState<string[]>(props.emails);
-  const [poc, setPoc] = useState(props.poc);
+  const [companyName, setCompanyName] = useState(props.company_name)
+  const [serviceLine, setServiceLine] = useState(props.service_line)
+  const [companyDescription, setCompanyDescription] = useState(props.company_description)
+  const [tier1Keywords, setTier1Keywords] = useState<string[]>(props.tier1_keywords)
+  const [tier2Keywords, setTier2Keywords] = useState<string[]>(props.tier2_keywords)
+  const [emails, setEmails] = useState<string[]>(props.emails)
+  const [poc, setPoc] = useState(props.poc)
 
   // Handlers for array fields
   const handleArrayChange = (setter: React.Dispatch<React.SetStateAction<string[]>>, arr: string[], idx: number, value: string) => {
-    const newArr = [...arr];
-    newArr[idx] = value;
-    setter(newArr);
-  };
+    const newArr = [...arr]
+    newArr[idx] = value
+    setter(newArr)
+  }
   const handleAddToArray = (setter: React.Dispatch<React.SetStateAction<string[]>>, arr: string[]) => {
-    setter([...arr, '']);
-  };
+    setter([...arr, ''])
+  }
   const handleDeleteFromArray = (setter: React.Dispatch<React.SetStateAction<string[]>>, arr: string[], idx: number) => {
-    const newArr = arr.filter((_, i) => i !== idx);
-    setter(newArr);
-  };
+    const newArr = arr.filter((_, i) => i !== idx)
+    setter(newArr)
+  }
 
   return (
     <Card sx={{ minWidth: 350, maxWidth: 500, margin: 2 }}>
@@ -77,20 +78,15 @@ function CompanyCard(props: CompanyCardData) {
             <Typography variant="subtitle2" sx={{ mb: 0.5 }}>Tier 1 Keywords:</Typography>
             <Stack direction="row" spacing={1} sx={{ flex: 1, justifyContent: 'flex-start', flexWrap: 'wrap', mb: 1 }}>
               {tier1Keywords.map((kw, idx) => (
-                <span key={idx} style={{ display: 'flex', alignItems: 'center' }}>
-                  <Chip label={kw} color="primary" size="small" sx={{ mr: 0.5 }} />
-                  <TextField
-                    value={kw}
-                    onChange={e => handleArrayChange(setTier1Keywords, tier1Keywords, idx, e.target.value)}
-                    size="small"
-                    variant="standard"
-                    InputProps={{ disableUnderline: false }}
-                    sx={{ width: 70, mx: 0.5 }}
-                  />
-                  <IconButton aria-label="delete" onClick={() => handleDeleteFromArray(setTier1Keywords, tier1Keywords, idx)} size="small">
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
-                </span>
+                <EditableChip
+                  index={idx}
+                  keyWords={tier1Keywords}
+                  handleDeleteFromArray={handleDeleteFromArray}
+                  handleArrayChange={handleArrayChange}
+                  setKeywords={setTier1Keywords}
+                  value={kw}
+                  key={idx}
+                />
               ))}
               <IconButton aria-label="add" onClick={() => handleAddToArray(setTier1Keywords, tier1Keywords)} size="small">
                 <AddIcon fontSize="small" />
@@ -101,20 +97,15 @@ function CompanyCard(props: CompanyCardData) {
             <Typography variant="subtitle2" sx={{ mb: 0.5 }}>Tier 2 Keywords:</Typography>
             <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', mb: 1 }}>
               {tier2Keywords.map((kw, idx) => (
-                <span key={idx} style={{ display: 'flex', alignItems: 'center' }}>
-                  <Chip label={kw} color="secondary" size="small" sx={{ mr: 0.5 }} />
-                  <TextField
-                    value={kw}
-                    onChange={e => handleArrayChange(setTier2Keywords, tier2Keywords, idx, e.target.value)}
-                    size="small"
-                    variant="standard"
-                    InputProps={{ disableUnderline: false }}
-                    sx={{ width: 70, mx: 0.5 }}
-                  />
-                  <IconButton aria-label="delete" onClick={() => handleDeleteFromArray(setTier2Keywords, tier2Keywords, idx)} size="small">
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
-                </span>
+                <EditableChip
+                  index={idx}
+                  keyWords={tier2Keywords}
+                  handleDeleteFromArray={handleDeleteFromArray}
+                  handleArrayChange={handleArrayChange}
+                  setKeywords={setTier2Keywords}
+                  value={kw}
+                  key={idx}
+                />
               ))}
               <IconButton aria-label="add" onClick={() => handleAddToArray(setTier2Keywords, tier2Keywords)} size="small">
                 <AddIcon fontSize="small" />
@@ -157,7 +148,7 @@ function CompanyCard(props: CompanyCardData) {
         </Stack>
       </CardContent>
     </Card>
-  );
+  )
 }
 
-export default CompanyCard;
+export default CompanyCard
