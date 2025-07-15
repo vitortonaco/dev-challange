@@ -74,46 +74,58 @@ export default function HomePage() {
           <Typography 
             fontWeight={'bold'}
             padding={4}
-            fontSize={36}
             textAlign={'center'}
             color='rgba(31, 31, 31, 0.87)'
             maxWidth={ '55vw'}
+            sx={{
+              fontSize: { xs: '1.8rem', sm: '2.5rem', md: '3rem', lg: 36 }, 
+              padding: { xs: 2, sm: 3, md: 4 }, 
+            }}
           >
             Get Company Information for Government Opportunities
           </Typography>
-          <Paper 
+            <Paper 
             elevation={4}
             sx={{
               display: 'flex',
-              width: '50vw',
-              flexDirection: 'row',
+              flexDirection: { xs: 'column', sm: 'row' }, 
+              width: { xs: '60vw', sm: '50vw' },          
               alignItems: 'center',
               justifyContent: 'center',
               padding: 4,
               borderRadius: 8,
-              backgroundColor: 'rgba(239, 239, 239, 1)'
-            }}>
-            <TextField
-              placeholder='Enter URL to analyze'
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              inputProps={{
-                      onKeyDown: (event) => {
-                        if (event.key === "Enter") {
-                          handleAnalyze(undefined)
-                          event.preventDefault()
-                        }
-                      },
-                    }}
-              />
-            <Button 
-              variant='contained' 
-              onClick={handleAnalyze}
-              disabled={loading || !url}
-              sx={{ marginLeft: 2, borderRadius: 2, backgroundColor: 'rgba(0,0,0,1)' }}
+              backgroundColor: 'rgba(239, 239, 239, 1)',
+              gap: 2, 
+            }}
             >
-              {loading ? 'Analyzing...' : 'Analyze'}
-            </Button>
+              <TextField
+                placeholder='Enter URL to analyze'
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                inputProps={{
+                        onKeyDown: (event) => {
+                          if (event.key === "Enter") {
+                            handleAnalyze(undefined)
+                            event.preventDefault()
+                          }
+                        },
+                      }}
+                />
+              <Button 
+                variant='contained' 
+                onClick={handleAnalyze}
+                disabled={loading || !url}
+                sx={{ 
+                  marginLeft: 2,
+                  borderRadius: 2,
+                  backgroundColor: 'rgba(0,0,0,1)',
+                  width: 'fit-content',
+                  maxWidth: '100%', 
+                  fontSize: { xs: '0.9rem', sm: '1rem' }
+                }}
+              >
+                {loading ? 'Analyzing...' : 'Analyze'}
+              </Button>
             </Paper>
             {(errorMessage) && (
             <Typography color={"error"} sx={{ marginTop: 2 }}>
