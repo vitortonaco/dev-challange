@@ -46,6 +46,14 @@ function CompanyCard(props: CompanyCardData) {
     setter(newArr)
   }
 
+  const stackStyle = {
+    flex: 1,
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    mb: 1,
+    paddingvertical: 1,
+  }
+
   return (
     <Card sx={{ minWidth: 350, maxWidth: 500, margin: 2, backgroundColor: '#dfdfdfff' , position: 'relative'}}>
       <IconButton
@@ -72,7 +80,7 @@ function CompanyCard(props: CompanyCardData) {
           </Typography>
           <div>
             <Typography variant="subtitle2" sx={{ mb: 0.5 }}>Service Line(s): </Typography>
-            <Stack direction="row" spacing={1} sx={{ flex: 1, justifyContent: 'flex-start', flexWrap: 'wrap', mb: 1 }}>
+            <Stack direction="row" spacing={1} sx={stackStyle}>
               {serviceLines.map((kw, idx) => (
                 <EditableChip
                   index={idx}
@@ -99,8 +107,8 @@ function CompanyCard(props: CompanyCardData) {
             multiline
           />
           <div>
-            <Typography variant="subtitle2" sx={{ mb: 0.5 }}>Tier 1 Keywords:</Typography>
-            <Stack direction="row" spacing={1} sx={{ flex: 1, justifyContent: 'flex-start', flexWrap: 'wrap', mb: 1 }}>
+            <Typography variant="subtitle2" sx={{ mb: 0.5 }}>Keywords that the company would use when searching for a government opportunity:</Typography>
+            <Stack direction="row" spacing={1} sx={stackStyle}>
               {tier1Keywords.map((kw, idx) => (
                 <EditableChip
                   index={idx}
@@ -118,8 +126,8 @@ function CompanyCard(props: CompanyCardData) {
             </Stack>
           </div>
           <div>
-            <Typography variant="subtitle2" sx={{ mb: 0.5 }}>Tier 2 Keywords:</Typography>
-            <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', mb: 1 }}>
+            <Typography variant="subtitle2" sx={{ mb: 0.5 }}>Keywords that the company might use when searching for a government opportunity:</Typography>
+            <Stack direction="row" spacing={1} sx={stackStyle}>
               {tier2Keywords.map((kw, idx) => (
                 <EditableChip
                   index={idx}
@@ -138,7 +146,7 @@ function CompanyCard(props: CompanyCardData) {
           </div>
           <div>
             <Typography variant="subtitle2" sx={{ mb: 0.5 }}>Emails:</Typography>
-            <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', mb: 1  }}>
+            <Stack direction="row" spacing={1} sx={stackStyle}>
               {emails.map((email, idx) => (
                 <EditableChip
                   index={idx}
@@ -157,7 +165,7 @@ function CompanyCard(props: CompanyCardData) {
           </div>
           <div>
             <Typography variant="subtitle2" sx={{ mb: 0.5 }}>POC(s): </Typography>
-            <Stack direction="row" spacing={1} sx={{ flex: 1, justifyContent: 'flex-start', flexWrap: 'wrap', mb: 1 }}>
+            <Stack direction="row" spacing={1} sx={stackStyle}>
               {poc.map((kw, idx) => (
                 <EditableChip
                   index={idx}

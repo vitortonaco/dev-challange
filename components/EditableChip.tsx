@@ -28,7 +28,7 @@ export function EditableChip(props: EditableChipProps) {
 
 
   return(
-    <span key={props.index} style={{ display: 'flex', alignItems: 'center' }}>
+    <span key={props.index} style={{ display: 'flex', alignItems: 'center' , paddingTop: 2 }}>
       {!edit && (
         <Chip
           label={
