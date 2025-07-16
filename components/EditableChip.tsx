@@ -8,6 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 type EditableChipProps = {
   index: number
   value: string
+  notDeletable?: boolean
   handleArrayChange: (
       setter: React.Dispatch<React.SetStateAction<string[]>>,
       arr: string[], 
@@ -32,23 +33,27 @@ export function EditableChip(props: EditableChipProps) {
       {!edit && (
         <Chip
           label={
-            <span style={{ display: 'flex', alignItems: 'center' }}>
-              <Typography color="rgba(255,255,255,1)">{props.value}</Typography>
-              <IconButton
-                aria-label="edit"
-                onClick={e => {
-                  e.stopPropagation()
-                  setEdit(true)
-                }}
-                size="small"
-                sx={{ ml: 0.5, p: 0.25 }}
-              >
-                <EditIcon fontSize="small" sx={{ color: 'rgba(205, 197, 203, 1)' }} />
-              </IconButton>
+            <span style={{ display: 'flex', alignItems: 'center', flex: 1 ,whiteSpace: 'normal', wordBreak: 'break-word' }}>
+              <Typography textAlign={'center'} color="rgba(255,255,255,1)" paddingY={1}>{props.value}</Typography>
             </span>
           }
           size="small"
-          sx={{ mr: 0.5, pr: 0.5, backgroundColor: "rgba(0,0,0,1)" }}
+          clickable
+          onClick={() => setEdit(true)}
+          sx={{ 
+            mr: 0.5, 
+            pr: 0.5, 
+            flex: 1,
+            height: 'auto', 
+            minHeight: '32px', 
+            backgroundColor: "rgba(0,0,0,1)",
+            "&:hover": {
+              backgroundColor: "rgba(47, 2, 76, 0.2)", 
+              "& .MuiTypography-root": {
+                color: "rgba(0,0,0,1)",
+              }
+            }
+          }}
         />
       )}
       {edit && (
@@ -58,6 +63,7 @@ export function EditableChip(props: EditableChipProps) {
             onChange={e => props.handleArrayChange(props.setKeywords, props.keyWords, props.index, e.target.value)}
             size="small"
             variant="standard"
+            multiline
             InputProps={{
               disableUnderline: false,
               endAdornment: (
@@ -73,11 +79,13 @@ export function EditableChip(props: EditableChipProps) {
                 </>
               ),
             }}
-            sx={{ mx: 0.5, minWidth: '70px' }}
+            sx={{ mx: 0.5, minWidth: '70px', flex: 1 }}
           />
-          <IconButton aria-label="delete" onClick={() => props.handleDeleteFromArray(props.setKeywords, props.keyWords, props.index)} size="small">
-            <DeleteIcon fontSize="small" />
-          </IconButton>
+          {!props.notDeletable && (
+            <IconButton aria-label="delete" onClick={() => props.handleDeleteFromArray(props.setKeywords, props.keyWords, props.index)} size="small">
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          )}
         </>
       )}
     </span>

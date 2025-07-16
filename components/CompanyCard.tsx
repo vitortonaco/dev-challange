@@ -27,11 +27,11 @@ export type CompanyCardData = {
 function CompanyCard(props: CompanyCardData) {
   const [companyName, setCompanyName] = useState(props.company_name)
   const [serviceLines, setServiceLines] = useState<string[]>(props.service_line)
-  const [companyDescription, setCompanyDescription] = useState(props.company_description)
   const [tier1Keywords, setTier1Keywords] = useState<string[]>(props.tier1_keywords)
   const [tier2Keywords, setTier2Keywords] = useState<string[]>(props.tier2_keywords)
   const [emails, setEmails] = useState<string[]>(props.emails)
   const [poc, setPoc] = useState<string[]>(props.poc)
+  const [companyDescriptionArray, setCompanyDescriptionArray] = useState<string[]>([props.company_description])
 
   const handleArrayChange = (setter: React.Dispatch<React.SetStateAction<string[]>>, arr: string[], idx: number, value: string) => {
     const newArr = [...arr]
@@ -97,15 +97,16 @@ function CompanyCard(props: CompanyCardData) {
               </IconButton>
             </Stack>
           </div>
-          <TextField
-            label="Description"
-            variant="standard"
-            value={companyDescription}
-            onChange={e => setCompanyDescription(e.target.value)}
-            InputProps={{ disableUnderline: true }}
-            fullWidth
-            multiline
-          />
+            <Typography variant="subtitle2" sx={{ mb: 0.5 }}>Description:</Typography>
+            <EditableChip
+              index={0}
+              keyWords={companyDescriptionArray}
+              handleDeleteFromArray={handleDeleteFromArray}
+              handleArrayChange={handleArrayChange}
+              setKeywords={setCompanyDescriptionArray}
+              value={companyDescriptionArray[0]}
+              notDeletable={true}
+            />
           <div>
             <Typography variant="subtitle2" sx={{ mb: 0.5 }}>Keywords that the company would use when searching for a government opportunity:</Typography>
             <Stack direction="row" spacing={1} sx={stackStyle}>
